@@ -9,7 +9,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <link rel="manifest" href="/manifest.webmanifest?v=20260814-10" />
+  <link rel="manifest" href="/manifest.webmanifest?v=20260814-11" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <title>Lancers Chapel</title>
   <style>
@@ -29,21 +29,19 @@
 </head>
 <body>
   <div id="root"></div>
-  <script type="module" src="/src/main.jsx?v=20260814-10"></script>
-  <script type="module" src="/src/home-circles.js?v=20260814-10"></script>
+  <script type="module" src="/src/main.jsx?v=20260814-11"></script>
+  <script type="module" src="/src/core-fixes.js?v=20260814-11"></script>
+  <script type="module" src="/src/home-circles.js?v=20260814-11"></script>
   <script type="module">
     let essentialsLoaded=false, extrasLoaded=false;
     async function loadEssentials(){
       if(essentialsLoaded || document.querySelector('.loading')) return;
       essentialsLoaded=true;
       const essentialModules=[
-        '/src/profile-questions.js?v=20260814-10',
-        '/src/player-onboarding.js?v=20260814-10',
-        '/src/admin-login-ui.js?v=20260814-10',
-        '/src/enhancements.js?v=20260814-10',
-        '/src/daily-circle-labels.js?v=20260814-10',
-        '/src/admin-enhancements.js?v=20260814-10',
-        '/src/prayer-rsvp-roster.js?v=20260814-10'
+        '/src/player-onboarding.js?v=20260814-11',
+        '/src/enhancements.js?v=20260814-11',
+        '/src/daily-circle-labels.js?v=20260814-11',
+        '/src/admin-enhancements.js?v=20260814-11'
       ];
       await Promise.all(essentialModules.map(src=>import(src).catch(console.error)));
     }
@@ -51,9 +49,9 @@
       if(extrasLoaded || !essentialsLoaded) return;
       extrasLoaded=true;
       const extras=[
-        '/src/reflections.js?v=20260814-10',
-        '/src/request-actions.js?v=20260814-10',
-        '/src/home-gameday.js?v=20260814-10'
+        '/src/reflections.js?v=20260814-11',
+        '/src/request-actions.js?v=20260814-11',
+        '/src/home-gameday.js?v=20260814-11'
       ];
       await Promise.all(extras.map(src=>import(src).catch(console.error)));
     }
