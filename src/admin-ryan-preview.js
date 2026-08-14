@@ -8,8 +8,10 @@ async function ensureRyanTab(){
   const {data:{session}}=await supabase.auth.getSession(); if(!session)return;
   const {data:profile}=await supabase.from('profiles').select('role,display_name').eq('id',session.user.id).maybeSingle(); if(profile?.role!=='admin')return;
   nav.classList.remove('five'); nav.classList.add('six');
+  nav.style.gridTemplateColumns='repeat(6,minmax(0,1fr))';
   if(nav.querySelector('[data-admin-ryan-preview]'))return;
-  const adminBtn=[...nav.querySelectorAll('button')].find(b=>b.textContent.trim()==='Admin');
+  const buttons=[...nav.querySelectorAll('button')];
+  const adminBtn=buttons.find(b=>(b.textContent||'').replace(/\s+/g,' ').trim().includes('Admin'))||buttons.at(-1);
   if(!adminBtn)return;
   const btn=document.createElement('button');btn.type='button';btn.dataset.adminRyanPreview='1';btn.innerHTML='<span>◉</span>Ryan';
   btn.onclick=()=>showRyanPreview(profile,session.user.id,btn);
@@ -24,4 +26,4 @@ function showRyanPreview(profile,userId,btn){
  for(const k of content.querySelectorAll('[data-kind]'))k.onclick=()=>{kind=k.dataset.kind;for(const x of content.querySelectorAll('[data-kind]'))x.classList.toggle('active',x===k)};
  content.querySelector('.send-preview').onclick=async()=>{const textarea=content.querySelector('textarea'),body=textarea.value.trim();if(!body)return;const anonymous=content.querySelector('input[type="checkbox"]').checked;const send=content.querySelector('.send-preview');send.disabled=true;send.textContent='Sending…';const {error}=await supabase.from('private_requests').insert({user_id:userId,sender_name:profile.display_name||'Pastor Ryan',kind,body,anonymous});if(error){alert(error.message);send.disabled=false;send.textContent='Send to Pastor Ryan';return;}content.innerHTML='<section class="private-page"><div class="success-card"><span>✓</span><h2>Sent privately</h2><p>The player-facing Ryan flow worked.</p></div></section>';};
 }
-const observer=new MutationObserver(()=>setTimeout(ensureRyanTab,50));observer.observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('load',ensureRyanTab);setInterval(ensureRyanTab,1500);
+const observer=new MutationObserver(()=>setTimeout(ensureRyanTab,50));observer.observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('load',ensureRyanTab);setInterval(ensureRyanTab,800);
