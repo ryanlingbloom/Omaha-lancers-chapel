@@ -1,0 +1,12 @@
+{
+  "name": "Omaha Lancers Chapel",
+  "short_name": "Lancers Chapel",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#080808",
+  "icons": [
+    {"src":"/apple-touch-icon.png","sizes":"180x180","type":"image/png","purpose":"any maskable"}
+  ]
+}
