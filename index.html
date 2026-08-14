@@ -9,7 +9,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <link rel="manifest" href="/manifest.webmanifest?v=20260814-4" />
+  <link rel="manifest" href="/manifest.webmanifest?v=20260814-5" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <title>Lancers Chapel</title>
   <style>
@@ -24,21 +24,34 @@
       loading.innerHTML='<div style="text-align:center;padding:24px"><strong style="display:block;margin-bottom:12px">Fresh sign-in needed</strong><button id="force-signin" style="border:0;border-radius:10px;background:#f47a22;color:#080808;font-weight:900;padding:12px 18px">Go to Sign In</button></div>';
       var b=document.getElementById('force-signin');
       if(b)b.onclick=function(){try{localStorage.removeItem('lancers-chapel-session');sessionStorage.clear();}catch(e){} location.replace('/?fresh='+Date.now());};
-    },6000);
+    },7000);
   </script>
 </head>
 <body>
   <div id="root"></div>
-  <script type="module" src="/src/main.jsx?v=20260814-4"></script>
-  <script type="module" src="/src/enhancements.js?v=20260814-4"></script>
-  <script type="module" src="/src/admin-enhancements.js?v=20260814-4"></script>
-  <script type="module" src="/src/reflections.js?v=20260814-4"></script>
-  <script type="module" src="/src/prayer-rsvp-roster.js?v=20260814-4"></script>
-  <script type="module" src="/src/profile-questions.js?v=20260814-4"></script>
-  <script type="module" src="/src/admin-login-ui.js?v=20260814-4"></script>
-  <script type="module" src="/src/request-actions.js?v=20260814-4"></script>
-  <script type="module" src="/src/player-onboarding.js?v=20260814-4"></script>
-  <script type="module" src="/src/pin-input-fix.js?v=20260814-4"></script>
-  <script type="module" src="/src/home-gameday.js?v=20260814-4"></script>
+  <script type="module" src="/src/main.jsx?v=20260814-5"></script>
+  <script type="module">
+    const extras=[
+      '/src/enhancements.js?v=20260814-5',
+      '/src/admin-enhancements.js?v=20260814-5',
+      '/src/reflections.js?v=20260814-5',
+      '/src/prayer-rsvp-roster.js?v=20260814-5',
+      '/src/profile-questions.js?v=20260814-5',
+      '/src/admin-login-ui.js?v=20260814-5',
+      '/src/request-actions.js?v=20260814-5',
+      '/src/player-onboarding.js?v=20260814-5',
+      '/src/pin-input-fix.js?v=20260814-5',
+      '/src/home-gameday.js?v=20260814-5'
+    ];
+    let loaded=false;
+    function loadExtras(){
+      if(loaded)return;
+      if(document.querySelector('.loading'))return;
+      loaded=true;
+      extras.reduce((p,src)=>p.then(()=>import(src).catch(()=>{})),Promise.resolve());
+    }
+    const timer=setInterval(()=>{loadExtras();if(loaded)clearInterval(timer)},250);
+    setTimeout(loadExtras,1000);
+  </script>
 </body>
 </html>
