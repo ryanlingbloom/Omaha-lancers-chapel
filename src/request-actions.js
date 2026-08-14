@@ -21,10 +21,11 @@ function addStyles() {
   const style = document.createElement('style');
   style.id = 'request-action-styles';
   style.textContent = `
-    .request-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+    .request-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
     .request-actions button{border:0;border-radius:9px;padding:9px 13px;font-weight:800;cursor:pointer}
     .request-reply{background:#f47a22;color:#080808}
     .request-delete{background:#8d2525;color:#fff}
+    .request-self-note{font-size:12px;color:#aaa;padding:8px 0}
     .request-reply-box{margin-top:10px;display:grid;gap:8px}
     .request-reply-box textarea{width:100%;min-height:82px;resize:vertical;background:#101010;color:#fff;border:1px solid #444;border-radius:10px;padding:10px;font:inherit;box-sizing:border-box}
     .request-reply-box .reply-controls{display:flex;gap:8px}
@@ -93,9 +94,12 @@ async function syncRequestActions() {
       if (!request || article.querySelector('.request-actions')) return;
       const actions = document.createElement('div');
       actions.className = 'request-actions';
-      actions.innerHTML = `<button class="request-reply">Reply</button><button class="request-delete">Delete</button>`;
+      const isSelfTest = request.user_id === session.user.id;
+      actions.innerHTML = isSelfTest
+        ? `<span class="request-self-note">Test request — you can’t reply to yourself.</span><button class="request-delete">Delete</button>`
+        : `<button class="request-reply">Reply</button><button class="request-delete">Delete</button>`;
       article.appendChild(actions);
-      actions.querySelector('.request-reply').onclick = () => sendReply(session, request, article);
+      if (!isSelfTest) actions.querySelector('.request-reply').onclick = () => sendReply(session, request, article);
       actions.querySelector('.request-delete').onclick = () => deleteRequest(request, article);
     });
   } finally {
