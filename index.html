@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#080808"/>
+<link rel="manifest" href="/manifest.webmanifest"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+<title>Lancers Chapel</title>
+<script>
+(function(){
+  const chicagoDay=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  const loadedDay=chicagoDay();
+  const refreshForNewDay=()=>{ if(chicagoDay()!==loadedDay) window.location.reload(); };
+  window.addEventListener('focus',refreshForNewDay);
+  window.addEventListener('pageshow',refreshForNewDay);
+  document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') refreshForNewDay(); });
+})();
+</script>
+<script type="module" crossorigin src="https://omaha-lancers-chapel-7o8xid17q-forge-da1d.vercel.app/assets/index--8AnfivI.js"></script>
+<link rel="stylesheet" crossorigin href="https://omaha-lancers-chapel-7o8xid17q-forge-da1d.vercel.app/assets/index-ErJgDMtY.css">
+</head>
+<body><div id="root"></div></body>
+</html>
