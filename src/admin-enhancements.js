@@ -1,0 +1,31 @@
+import { createClient } from '@supabase/supabase-js';
+
+const supabase=createClient('https://jpfnhwolttfisawfthbf.supabase.co','sb_publishable_vsHZotBHUEePBvunVgTWWQ_fIImlhYY',{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'lancers-chapel-session'}});
+let busy=false;
+function day(d=new Date()){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).format(d)}
+function streak(days){const all=[...new Set(days.filter(Boolean))].sort().reverse();let c=0,cur=new Date(`${day()}T12:00:00`);if(!all.includes(day()))cur.setDate(cur.getDate()-1);for(const x of all){const expected=day(cur);if(x===expected){c++;cur.setDate(cur.getDate()-1)}else if(x<expected)break}return c}
+function styles(){if(document.getElementById('admin-streak-css'))return;const s=document.createElement('style');s.id='admin-streak-css';s.textContent=`.player-streaks{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.player-streaks span{font-size:11px;padding:5px 8px;border-radius:999px;background:#242424;color:#ddd;border:1px solid #333}.player-streaks span.on{border-color:#ef6c00;color:#ffb36e}.player-streaks b{color:#fff}.admin-streak-key{font-size:12px;color:#999;margin:0 0 14px}.chapel-food-hidden{display:none!important}`;document.head.appendChild(s)}
+async function isAdmin(){const {data:{session}}=await supabase.auth.getSession();if(!session)return false;const {data}=await supabase.from('profiles').select('role').eq('id',session.user.id).maybeSingle();return data?.role==='admin'}
+function removeFood(){
+  document.querySelectorAll('.chapel-editor label').forEach(l=>{if((l.textContent||'').trim().startsWith('Food'))l.classList.add('chapel-food-hidden')});
+  const card=document.querySelector('.feature-event');if(card){const info=card.querySelector(':scope > div:not(.rsvp-buttons):not(.live-rsvp-roster)');if(info){[...info.querySelectorAll('span')].forEach(sp=>{const t=(sp.textContent||'').trim();if(/food|meal|pizza|provided/i.test(t))sp.classList.add('chapel-food-hidden')})}}
+}
+async function addStreaks(){
+  const roster=document.querySelector('.player-roster');if(!roster||!(await isAdmin()))return;
+  const [{data:players},{data:checks},{data:actions}]=await Promise.all([
+    supabase.from('profiles').select('id,display_name').eq('role','player').eq('approved',true),
+    supabase.from('checkins').select('user_id,checkin_day,created_at').order('created_at',{ascending:false}).limit(5000),
+    supabase.from('daily_spiritual_actions').select('user_id,action_date,read_bible,encouraged_teammate').order('action_date',{ascending:false}).limit(5000)
+  ]);
+  let key=roster.parentElement?.querySelector('.admin-streak-key');if(!key){key=document.createElement('p');key.className='admin-streak-key';key.textContent='Current streaks · Check-in · Bible/Devotion · Encourage';roster.before(key)}
+  for(const article of roster.querySelectorAll('article')){
+    const p=(players||[]).find(x=>(article.textContent||'').includes(x.display_name));if(!p)continue;
+    const cd=(checks||[]).filter(x=>x.user_id===p.id).map(x=>x.checkin_day||day(new Date(x.created_at)));
+    const pa=(actions||[]).filter(x=>x.user_id===p.id);
+    const vals=[['✓ Check-in',streak(cd),cd.includes(day())],['📖 Bible',streak(pa.filter(x=>x.read_bible).map(x=>x.action_date)),!!pa.find(x=>x.action_date===day()&&x.read_bible)],['🤝 Encourage',streak(pa.filter(x=>x.encouraged_teammate).map(x=>x.action_date)),!!pa.find(x=>x.action_date===day()&&x.encouraged_teammate)]];
+    let box=article.querySelector('.player-streaks');if(!box){box=document.createElement('div');box.className='player-streaks';const first=article.querySelector('div');(first||article).appendChild(box)}
+    box.innerHTML=vals.map(([label,n,on])=>`<span class="${on?'on':''}">${label} <b>${n}</b>d</span>`).join('');
+  }
+}
+async function run(){if(busy)return;busy=true;try{styles();removeFood();await addStreaks()}finally{busy=false}}
+new MutationObserver(()=>setTimeout(run,100)).observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('load',run);setInterval(run,2500);
