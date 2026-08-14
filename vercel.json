@@ -1,7 +1,6 @@
 {
   "rewrites": [
     {"source":"/lancers-logo.png","destination":"https://omaha-lancers-chapel-7o8xid17q-forge-da1d.vercel.app/lancers-logo.png"},
-    {"source":"/apple-touch-icon.png","destination":"https://omaha-lancers-chapel-7o8xid17q-forge-da1d.vercel.app/apple-touch-icon.png"},
-    {"source":"/manifest.webmanifest","destination":"https://omaha-lancers-chapel-7o8xid17q-forge-da1d.vercel.app/manifest.webmanifest"}
+    {"source":"/apple-touch-icon.png","destination":"https://omaha-lancers-chapel-7o8xid17q-forge-da1d.vercel.app/apple-touch-icon.png"}
   ]
 }
