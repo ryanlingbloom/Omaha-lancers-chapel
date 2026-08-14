@@ -6,26 +6,39 @@
   <meta name="theme-color" content="#080808" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <link rel="manifest" href="/manifest.webmanifest?v=20260814-4" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <title>Lancers Chapel</title>
   <style>
     .live-rsvp-roster{margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12)}.live-rsvp-roster h3{margin:0 0 10px}.rsvp-summary{display:flex;gap:14px;margin-bottom:10px}.rsvp-summary b{color:#65d483}.rsvp-summary span{color:#ff7777}.rsvp-names{display:flex;flex-direction:column;gap:6px}.rsvp-names span{font-size:14px}.live-rsvp-roster details{margin-top:12px}.live-rsvp-roster details span{display:block;padding:4px 0}.clickable-player{cursor:pointer}.view-profile-button{margin-left:auto!important;background:#ef6c00!important;color:white!important;border:0!important;border-radius:8px!important;padding:8px 10px!important}.profile-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}.profile-modal{position:relative;width:min(520px,100%);max-height:85vh;overflow:auto;background:#151515;border:1px solid #333;border-radius:18px;padding:24px;color:#fff}.profile-modal h2{margin:6px 0 20px}.profile-modal>div{padding:10px 0;border-top:1px solid #2b2b2b}.profile-modal p{margin:4px 0 0;color:#ccc}.profile-close{position:absolute;right:14px;top:10px;border:0;background:transparent;color:#fff;font-size:30px}.reflection-box{margin-top:18px;padding-top:16px;border-top:1px solid #343434;display:grid;gap:9px}.reflection-box label{font-size:10px;font-weight:900;color:#f2a266}.reflection-box textarea{min-height:92px;border:1px solid #4a4a4a;border-radius:11px;background:#111;color:#fff;padding:11px;line-height:1.5}.reflection-box button{border:0;border-radius:9px;background:#f47a22;color:#080808;font-weight:900;padding:10px}.reflection-box button:disabled{opacity:.45}.reflection-box small{font-size:8px;color:#888}.prayer-rsvp-roster{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.12);font-size:10px;line-height:1.5}.prayer-rsvp-roster>strong{color:#f6a15d}.prayer-rsvp-roster>span{display:block;color:#aaa;margin:3px 0 6px}.prayer-rsvp-roster>div{color:#eee}.prayer-rsvp-roster details{margin-top:6px;color:#aaa}
   </style>
+  <script>
+    window.__LANCERS_BOOT_STARTED__=Date.now();
+    setTimeout(function(){
+      var loading=document.querySelector('.loading');
+      if(!loading) return;
+      try{localStorage.removeItem('lancers-chapel-session');}catch(e){}
+      loading.innerHTML='<div style="text-align:center;padding:24px"><strong style="display:block;margin-bottom:12px">Fresh sign-in needed</strong><button id="force-signin" style="border:0;border-radius:10px;background:#f47a22;color:#080808;font-weight:900;padding:12px 18px">Go to Sign In</button></div>';
+      var b=document.getElementById('force-signin');
+      if(b)b.onclick=function(){try{localStorage.removeItem('lancers-chapel-session');sessionStorage.clear();}catch(e){} location.replace('/?fresh='+Date.now());};
+    },6000);
+  </script>
 </head>
 <body>
   <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
-  <script type="module" src="/src/boot-recovery.js?v=20260814-1"></script>
-  <script type="module" src="/src/enhancements.js"></script>
-  <script type="module" src="/src/admin-enhancements.js"></script>
-  <script type="module" src="/src/reflections.js?v=20260814-2"></script>
-  <script type="module" src="/src/prayer-rsvp-roster.js"></script>
-  <script type="module" src="/src/profile-questions.js"></script>
-  <script type="module" src="/src/admin-login-ui.js"></script>
-  <script type="module" src="/src/request-actions.js"></script>
-  <script type="module" src="/src/player-onboarding.js?v=20260814-3"></script>
-  <script type="module" src="/src/pin-input-fix.js?v=20260814-3"></script>
-  <script type="module" src="/src/home-gameday.js?v=20260814-2"></script>
+  <script type="module" src="/src/main.jsx?v=20260814-4"></script>
+  <script type="module" src="/src/enhancements.js?v=20260814-4"></script>
+  <script type="module" src="/src/admin-enhancements.js?v=20260814-4"></script>
+  <script type="module" src="/src/reflections.js?v=20260814-4"></script>
+  <script type="module" src="/src/prayer-rsvp-roster.js?v=20260814-4"></script>
+  <script type="module" src="/src/profile-questions.js?v=20260814-4"></script>
+  <script type="module" src="/src/admin-login-ui.js?v=20260814-4"></script>
+  <script type="module" src="/src/request-actions.js?v=20260814-4"></script>
+  <script type="module" src="/src/player-onboarding.js?v=20260814-4"></script>
+  <script type="module" src="/src/pin-input-fix.js?v=20260814-4"></script>
+  <script type="module" src="/src/home-gameday.js?v=20260814-4"></script>
 </body>
 </html>
