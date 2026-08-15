@@ -9,7 +9,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <link rel="manifest" href="/manifest.webmanifest?v=20260814-13" />
+  <link rel="manifest" href="/manifest.webmanifest?v=20260814-14" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <title>Lancers Chapel</title>
   <style>
@@ -29,42 +29,15 @@
 </head>
 <body>
   <div id="root"></div>
-  <script type="module" src="/src/main.jsx?v=20260814-13"></script>
-  <script type="module" src="/src/core-fixes.js?v=20260814-13"></script>
-  <script type="module" src="/src/core-ui-fixes.js?v=20260814-13"></script>
-  <script type="module" src="/src/admin-checkin-names.js?v=20260814-13"></script>
-  <script type="module" src="/src/home-circles.js?v=20260814-13"></script>
-  <script type="module" src="/src/game-prayer-rosters.js?v=20260814-13"></script>
+  <script type="module" src="/src/main.jsx?v=20260814-14"></script>
+  <script type="module" src="/src/player-onboarding.js?v=20260814-14"></script>
+  <script type="module" src="/src/core-ui-fixes.js?v=20260814-14"></script>
+  <script type="module" src="/src/admin-checkin-names.js?v=20260814-14"></script>
+  <script type="module" src="/src/home-circles.js?v=20260814-14"></script>
+  <script type="module" src="/src/game-prayer-rosters.js?v=20260814-14"></script>
   <script type="module">
-    let essentialsLoaded=false, extrasLoaded=false;
-    async function loadEssentials(){
-      if(essentialsLoaded || document.querySelector('.loading')) return;
-      essentialsLoaded=true;
-      const essentialModules=[
-        '/src/player-onboarding.js?v=20260814-13',
-        '/src/enhancements.js?v=20260814-13',
-        '/src/daily-circle-labels.js?v=20260814-13',
-        '/src/admin-enhancements.js?v=20260814-13'
-      ];
-      await Promise.all(essentialModules.map(src=>import(src).catch(console.error)));
-    }
-    async function loadExtras(){
-      if(extrasLoaded || !essentialsLoaded) return;
-      extrasLoaded=true;
-      const extras=[
-        '/src/reflections.js?v=20260814-13',
-        '/src/request-actions.js?v=20260814-13',
-        '/src/home-gameday.js?v=20260814-13'
-      ];
-      await Promise.all(extras.map(src=>import(src).catch(console.error)));
-    }
-    const timer=setInterval(async()=>{
-      if(document.querySelector('.loading')) return;
-      await loadEssentials();
-      setTimeout(loadExtras,300);
-      if(essentialsLoaded) clearInterval(timer);
-    },150);
-    setTimeout(async()=>{await loadEssentials();setTimeout(loadExtras,300)},700);
+    const extras=['/src/reflections.js?v=20260814-14','/src/request-actions.js?v=20260814-14','/src/home-gameday.js?v=20260814-14'];
+    setTimeout(()=>Promise.all(extras.map(src=>import(src).catch(console.error))),900);
   </script>
 </body>
 </html>
