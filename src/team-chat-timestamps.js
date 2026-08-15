@@ -1,0 +1,6 @@
+import { createClient } from '@supabase/supabase-js';
+const supabase=createClient('https://jpfnhwolttfisawfthbf.supabase.co','sb_publishable_vsHZotBHUEePBvunVgTWWQ_fIImlhYY',{auth:{persistSession:true,autoRefreshToken:true,storageKey:'lancers-chapel-session'}});
+let running=false;
+function stamp(iso){return new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}).format(new Date(iso));}
+async function apply(){if(running)return;const list=document.querySelector('.chat-panel .message-list');if(!list)return;running=true;try{const {data,error}=await supabase.from('messages').select('id,created_at').order('created_at',{ascending:true}).limit(150);if(error)return;const nodes=[...list.querySelectorAll(':scope > .message')];nodes.forEach((node,i)=>{const row=(data||[])[i];const time=node.querySelector('time');if(row&&time){const next=stamp(row.created_at);if(time.textContent!==next){time.textContent=next;time.title='Central Time';}}});}finally{running=false}}
+window.addEventListener('load',()=>setTimeout(apply,700));new MutationObserver(()=>setTimeout(apply,100)).observe(document.documentElement,{childList:true,subtree:true});setInterval(apply,3000);
