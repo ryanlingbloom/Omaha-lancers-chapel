@@ -136,12 +136,16 @@ function Home({user,devotion,event,checkins,onRefresh}) {
   const today=chicagoDay(now);
   const checkedToday=checkins.some(c=>c.checkin_day===today || chicagoDay(new Date(c.created_at))===today);
   const streak=useMemo(()=>{
+    // Preserve the accumulated check-in streak for Cam and Ryan, even across missed days.
+    if(['95c04a81-3285-4bf6-969f-b0f4a0ccc0c3','2186d499-f671-444f-b263-18ce4843f714'].includes(user?.id)) {
+      return new Set(checkins.map(c=>c.checkin_day||chicagoDay(new Date(c.created_at)))).size;
+    }
     const days=[...new Set(checkins.map(c=>c.checkin_day||chicagoDay(new Date(c.created_at))))].sort().reverse();
     let count=0; let cursor=new Date(`${today}T12:00:00`);
     if(!days.includes(today)) cursor.setDate(cursor.getDate()-1);
     for(const day of days){ if(day===chicagoDay(cursor)){count++;cursor.setDate(cursor.getDate()-1);} else if(day<chicagoDay(cursor)) break; }
     return count;
-  },[checkins,today]);
+  },[checkins,today,user?.id]);
   async function checkin(mood){
     if(checkedToday||saving) return; setSaving(true); setNotice('');
     const {error}=await supabase.from('checkins').insert({user_id:user.id,mood});
